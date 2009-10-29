@@ -1,0 +1,21 @@
+# Add the appropriate entries below to your Rails database config in RAILS_ROOT/config/database.yml
+gateway_enfora_development:
+  adapter: mysql
+  database: enfora_development
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+  
+gateway_enfora_staging:
+  adapter: mysql
+  database: enfora_staging
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+  
+gateway_enfora_production:
+  adapter: mysql
+  database: enfora_production
+  username: root
+  password: 
+  socket: /tmp/mysql.sock

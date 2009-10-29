@@ -1,0 +1,58 @@
+<div id="header">
+  <div id="company" ><%= session[:company] %></div>
+  
+  <div id="ub-login" >
+    Welcome, <%= session[:first_name] %> | <a href="/home" >Exit Admin</a> | <a href="/logout"  title="Logout">Logout</a>&nbsp;&nbsp;
+    <a href="<%= MAIN_WEBSITE_URL %>" target="_blank"><img src="/images/logo_small.png" border ="0" style="vertical-align: middle;" /></a>
+  </div>
+
+  <div style="clear:both;"></div>
+
+  <% controller = params[:controller]  %>
+  <% action = params[:action]  %>
+  <% controller_parts = controller.split('/') %>
+  
+  <div id="nav_tabs">
+    <ul>
+      <li <% if controller == 'admin' %> class="selected"<% end %> style="margin-left: 10px"><a href="/admin">Overview</a></li>
+      <li <% if controller == 'admin/accounts' %> class="selected_subnav"<% end %>><a href="/admin/accounts">Accounts</a></li>
+      <li <% if controller == 'admin/users' %> class="selected_subnav"<% end %>><a href="/admin/users">Users</a></li>
+      <li <% if controller == 'admin/devices' %> class="selected_subnav"<% end %>><a href="/admin/devices">Devices</a></li>
+	<li <% if controller == 'admin/device_profiles' %> class="selected_subnav"<% end %>><a href="/admin/device_profiles">Device Profiles</a></li>
+	<li class="far_right"></li>
+	<li class="<% if controller.index("enfora") %>selected <% end %>right">
+		<a href="/enfora">Enfora Gateway</a>
+	</li>
+	<li class="<% if controller == "xirgo_wired" || controller == "xirgo_wired/device" || controller == "xirgo_wired/command_request" %>selected <% end %>right">
+		<a href="/xirgo_wired">NM-5500 Gateway</a>
+	</li>
+	<li class="<% if controller == "xirgo" || controller == "xirgo/device" || controller == "xirgo/command_request" %>selected <% end %>right">
+		<a href="/xirgo">NM-OBD Gateway</a>
+	</li>
+	  </ul>
+  </div>
+</div>
+
+<% if controller_parts.length > 1 && controller_parts[0] != 'fast_commands' %>
+  <div id="subnav">
+    <% if controller_parts[0] != 'admin' %>
+      <%= render :partial => "#{controller_parts[0]}/#{controller_parts[1]}/header" %>
+    <% else %>    
+      <% if action == 'edit' || action == 'new' || action == 'show' %>
+        <a href="javascript:history.go(-1);">&laquo; Back</a>
+      <% end %>
+      
+      <% if action == 'edit' || action == 'show' %>
+        |
+      <% end %>
+      
+      <% if action != 'new' %>
+        <a href="/admin/<%= controller_parts[1] %>/new">New</a>
+      <% end %>
+      
+      <% if action == 'show' %>
+        | <a href="/admin/<%= controller_parts[1] %>/edit/<%= params[:id] %>">Edit</a>
+      <% end %>    
+    <% end %>
+  </div>
+<% end %>

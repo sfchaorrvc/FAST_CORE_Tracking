@@ -1,0 +1,20 @@
+common: &default_settings
+  geonames_primary:     http://ws.geonames.org
+  geonames_failover:    http://ws.geonames.org
+  geonames_username:    amills
+  # 259200 = 3 days
+  retry_primary_seconds: 259200
+  numerex_service:       http://geo.numerex.com
+  default_country:      USA
+
+development:
+  <<: *default_settings
+
+slicehost:
+  <<: *default_settings
+
+production:
+  <<: *default_settings
+
+test:
+  <<: *default_settings

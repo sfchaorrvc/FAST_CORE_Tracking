@@ -1,0 +1,21 @@
+# Add the appropriate entries below to your Rails database config in RAILS_ROOT/config/database.yml
+gateway_xirgo-wired_development:
+  adapter: mysql
+  database: xirgo_wired_development
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+  
+gateway_xirgo-wired_staging:
+  adapter: mysql
+  database: xirgo_wired_staging
+  username: root
+  password: 
+  socket: /tmp/mysql.sock
+  
+gateway_xirgo-wired_production:
+  adapter: mysql
+  database: xirgo_wired_production
+  username: root
+  password: 
+  socket: /tmp/mysql.sock

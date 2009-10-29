@@ -1,0 +1,160 @@
+<% javascript :prototype, :lowpro, :filters %>
+<% form_tag({:controller=>'device',:action =>'list'}) do %>
+
+<h2 style="margin-bottom: 5px;">Select the devices you'd like to configure and enter the parameters below</h2>
+<div style="background-color: rgb(238, 238, 238); padding: 10px; margin-bottom: 10px;">
+  <%= select_account(params[:search]) %>
+  <%= select_device_profile(params[:search]) %>
+</div>
+
+	<% if @error %>
+		<div id="error_message">
+			<%= @error %>
+		</div>
+	<% end %>
+
+	<table id="ub-table">
+		<tr class="header">
+			<td style="width:15px;">&nbsp;</td>
+			<td>Name</td>
+			<td>Firmware</td>
+			<td>IMEI</td>
+			<td>IP</td>
+			<td>Port</td>
+		</tr>
+		<% for device in @devices %>
+			<tr class="<%= cycle("gray_row", "") %>">
+				<td style="width:15px;"><input name="device_ids[]" type="checkbox" <% if @selections[device.id] %>checked<% end %> value="<%= device.id %>"/></td>
+				<td><%= Device.friendly_name_for_gateway_device(device) or '&nbsp;' %></td>
+				<td><% if device.imei.length > 17 %>Old<% else %>New<% end %></td>
+				<td><%= link_to device.imei,:controller => 'command_request',:action => 'list',:id => device %></td>
+				<td><%= device.ip_address or '&nbsp;' %></td>
+				<td><%= device.port or '&nbsp;' %></td>
+			</tr>
+		<% end %>
+	</table>
+  <div  class="ublip-pagination">
+    <%= will_paginate @devices%>
+  </div>	
+	<div id="configuration_header">
+		Configuration Parameters
+	</div>
+	
+	<div id="configuration_form">
+		<div class="row">Report <strong>ignition on</strong> events every <input type="text" name="XT3001" value="1" size="5" /> minutes <span class="dim">(enter 0 to disable)</span></div>
+		<div class="row">Report <strong>ignition off</strong> events every <input type="text" name="XT3002" value="60" size="5" /> minutes <span class="dim">(enter 0 to disable)</span></div>
+		<div class="row">Report <strong>direction change</strong> events every
+			<select name="XT3003">
+				<option>0</option>
+				<option>15</option>
+				<option>30</option>
+				<option>45</option>
+				<option>60</option>
+				<option selected="selected">75</option>
+				<option>90</option>
+				<option>105</option>
+				<option>120</option>
+				<option>135</option>
+				<option>150</option>
+				<option>165</option>
+				<option>180</option>
+				<option>195</option>
+				<option>210</option>
+				<option>225</option>
+				<option>240</option>
+				<option>255</option>
+				<option>270</option>
+				<option>285</option>
+				<option>300</option>
+				<option>315</option>
+				<option>330</option>
+				<option>345</option>
+			</select>
+			degrees <span class="dim">(select 0 to disable)</span>
+		</div>
+		<div class="row">Report <strong>speed</strong> events when speed exceeds 
+			<select name="XT3004">
+				<option>0</option>
+				<option>10</option>
+				<option>15</option>
+				<option>20</option>
+				<option>25</option>
+				<option>30</option>
+				<option>35</option>
+				<option>40</option>
+				<option>45</option>
+				<option>50</option>
+				<option>55</option>
+				<option>60</option>
+				<option>65</option>
+				<option>70</option>
+				<option>75</option>
+				<option>80</option>
+				<option>85</option>
+				<option>90</option>
+			</select>
+			mph <span class="dim">(select 0 to disable)</span>
+		</div>
+		
+		<div class="row">
+			Report <strong>mileage</strong> events every 
+			<select name="XT3006">
+				<option>0</option>
+				<option>10</option>
+				<option>20</option>
+				<option>30</option>
+				<option>40</option>
+				<option>50</option>
+				<option>60</option>
+				<option>70</option>
+				<option>80</option>
+				<option>90</option>
+				<option>100</option>
+				<option>500</option>
+				<option>1000</option>
+				<option>1500</option>
+				<option>2000</option>
+				<option>2500</option>
+				<option>3000</option>
+				<option>3500</option>
+				<option>4000</option>
+				<option>4500</option>
+				<option>5000</option>
+				<option>5500</option>
+				<option>6000</option>
+			</select>
+			miles <span class="dim">(select 0 to disable)</span>
+		</div>
+		
+		<div class="row">
+			<span style="color: #339900;font-weight: bold">[NEW]</span> Report <strong>battery</strong> events when voltage falls on or below
+			<select name="XT3008">
+				<option>0</option>
+				<option>6</option>
+				<option>7</option>
+				<option>8</option>
+				<option>9</option>
+				<option>10</option>
+				<option selected="selected">11</option>
+				<option>12</option>
+				<option>13</option>
+				<option>14</option>
+				<option>15</option>
+				<option>16</option>
+				<option>17</option>
+				<option>18</option>
+				<option>19</option>
+				<option>20</option>
+			</select>
+			volts <span class="dim">(select 0 to disable)
+		</div>	
+		<div>
+			<span style="color: #339900;font-weight: bold">[NEW]</span> Report <strong>heartbeat</strong> events every <input type="text" name="XT3010" style="width: 50px;" value="1440" /> minutes <span class="dim">(0 to disable)</span><br />
+			<input type="checkbox" name="first_time_fix" value="yes" /> Send event on first GPS fix? 
+		</div>
+	</div>
+	<div id="configuration_submit">
+		<input type="submit" value="Submit" />
+	</div>
+	
+<% end%>

@@ -1,0 +1,22 @@
+<div id="header">
+	<div id="company" ><%= session[:company] %></div>
+	
+	<div id="ub-login">
+		Welcome, <%= session[:first_name] %> | <% if session[:is_super_admin] == true %><a href="/admin" >Admin</a> | <% end %> <a href="/logout" title="Logout">Logout</a>&nbsp;&nbsp;
+		<a href="<%= MAIN_WEBSITE_URL %>" target="_blank"><img src="/images/logo_small.png" border ="0" style="vertical-align: middle;" /></a>
+	</div>
+
+	<div style="clear:both;"></div>
+
+	<div id="nav_tabs">
+		<ul>
+	   		<li <% if current_controller == 'home'%> class="selected "<% end %> style="margin-left: 10px"><a href="/home">Overview</a></li>
+			<li <% if current_controller == 'reports' %> class="selected_subnav"<% end %>><a href="/reports">Reports</a></li>
+			<li <% if current_controller == 'contact' %> class="selected far_right"<% else %>class="far_right"<% end %>><a href="/contact">Contact</a></li>
+			<li <% if current_controller == 'settings' %> class="selected right"<% else %>class="right"<% end %>><a href="/settings">Settings</a></li>
+			<li <% if current_controller == 'users' %> class="selected_subnav right"<% else %>class="right"<% end %>><a href="/users">Users</a></li>
+			<li <% if current_controller == 'devices' || current_controller == 'geofence' || current_controller == 'maintenance' %> class="selected_subnav right"<% else %>class="right"<% end %>><a href="/devices">Devices</a></li>
+		</ul>
+    </div>
+     
+</div>

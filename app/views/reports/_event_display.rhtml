@@ -1,0 +1,48 @@
+<% if reading.event_type.nil? %>
+	-
+<% elsif params[:action] == 'geofence' %>
+
+	<%= reading.geofence_event_type.titleize %> <%= reading.geofence ? reading.geofence.name : 'geofence' %>
+
+<% elsif reading.event_type == 'normal' %>
+
+	<% if reading.geofence_event_type != '' %>
+		<%= reading.geofence_event_type.titleize %> <a href="/reports/geofence/<%= @device.id %>" title="View location report"><%= reading.geofence ? reading.geofence.name : 'location' %></a>
+	<% else %>
+		<%= reading.event_type.titleize %>
+	<% end %>
+
+<% elsif @device.profile.stops and (reading.event_type =='startstop_et41' || reading.event_type == 'stop') && reading.speed==0 %>
+
+	<a href="/reports/stop/<%= @device.id %>?end_date=<%= reading.created_at.in_time_zone.to_date %>&start_date=<%= reading.created_at.in_time_zone.to_date %>" title="View stop report" >Stop</a>
+
+<% elsif @device.profile.idles and reading.event_type == 'idle' %>
+
+	<a href="/reports/idle/<%= @device.id %>" title="View idle report">Idle</a>
+
+<% elsif @device.profile.speeds and (reading.event_type == 'speeding' || reading.event_type == 'Speed Alert') %>
+
+	<% if params[:action] == 'speeding' %>
+		<%= reading.event_type.titleize %>
+	<% else %>
+		<a href="/reports/speeding/<%= @device.id %>" title="View idle report"><%= reading.event_type.titleize %></a>
+	<% end %>
+
+<% elsif (@device.profile.runs or @device.profile.idles) and reading.event_type.index('engine') %>
+
+	<% if @device.profile.runs %>
+		<a href="/reports/runtime/<%= @device.id %>" title="View runtime report"><%= reading.event_type.titleize %></a>
+	<% else %>
+		<%= reading.event_type.titleize %>
+	<% end %>
+
+<% else %>
+
+	<%= reading.event_type == 'Deaccelleration Alert' ? 'Hard Braking' : reading.event_type.titleize %>
+
+<% end %>
+
+
+<% if params[:action] != 'geofence' && reading.geofence_event_type != '' && reading.event_type != 'normal' %>
+	while <%= reading.geofence_event_type %>ing <a href="/reports/geofence/<%= @device.id %>" title="View location report"><%= reading.geofence ? reading.geofence.name : 'location' %></a>
+<% end %>
